@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.supremecorp.springsecurity.ApplicationUserRole.ADMIN;
+import static com.supremecorp.springsecurity.ApplicationUserRole.STUDENT;
+
 /**
  * Created by suprememajor on the 9/12/21
  */
@@ -28,8 +31,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*")
-                .permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -42,10 +45,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails jamesMeyersUser = User.builder()
                 .username("James")
                 .password(passwordEncoder.encode("complicate"))
-                .roles("STUDENT") // ROLE_STUDENT
+                .roles(STUDENT.name()) // ROLE_STUDENT
+                .build();
+
+        UserDetails majorUser = User.builder()
+                .username("Major")
+                .password(passwordEncoder.encode("complicate"))
+                .roles(ADMIN.name()) // ROLE_STUDENT
                 .build();
         return new InMemoryUserDetailsManager(
-                jamesMeyersUser
+                jamesMeyersUser,
+                majorUser
         );
     }
 }
