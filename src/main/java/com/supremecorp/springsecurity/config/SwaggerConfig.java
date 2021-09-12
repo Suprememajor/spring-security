@@ -15,6 +15,6 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 public class SwaggerConfig {
     public Docket productApi() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.techmountain.secondaryschoolsystembackend.controllers")).paths(regex("/smss.*")).build();
+        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.supremecorp.springsecurity")).paths(regex("/api/v1/students.*")).build();
     }
 }
